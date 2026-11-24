@@ -2,135 +2,179 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#18251e">
-<title>Needle in the Hayfield</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#17151d">
+<title>HAYWIRE // Needle Fever</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap');
-:root{color-scheme:dark;--ink:#f4eedc;--muted:#a9b39e;--lime:#d6e58b;--panel:#202e25;--line:#465744}
-*{box-sizing:border-box}body{margin:0;background:#17231c;color:var(--ink);font-family:Outfit,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
-main{max-width:1440px;margin:auto;padding:22px clamp(12px,3vw,38px) 30px}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-.brand{font-weight:800;letter-spacing:.14em;font-size:13px;color:var(--lime)}.brand span{color:#f4eedc}
-.hint-top{font:11px 'DM Mono',monospace;color:var(--muted);letter-spacing:.08em}
-h1{font-size:clamp(28px,4vw,44px);line-height:1;margin:0 0 7px;letter-spacing:-.045em}.intro{color:var(--muted);margin:0 0 18px;font-size:14px}
-.hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:12px}
-.stat{background:linear-gradient(145deg,#29392d,#202d24);border:1px solid var(--line);border-radius:12px;padding:10px 14px;box-shadow:0 5px 18px #07120c55}
-.stat small{display:block;color:#aab69d;font:10px 'DM Mono',monospace;letter-spacing:.13em;text-transform:uppercase}.stat strong{display:block;font-size:clamp(19px,2.4vw,27px);font-weight:700;color:var(--lime);font-variant-numeric:tabular-nums}
-.game-shell{position:relative;border:1px solid #53684f;border-radius:16px;overflow:hidden;background:#9eb17a;box-shadow:0 20px 60px #07120c80}
-#game{width:100%;height:min(66vh,680px);min-height:390px;display:block;touch-action:none;cursor:crosshair}
-.crosshair{position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%);pointer-events:none;opacity:.8}
-.crosshair:before,.crosshair:after{content:"";position:absolute;background:#fff8d6;box-shadow:0 1px 4px #192318}.crosshair:before{width:2px;height:24px;left:11px}.crosshair:after{height:2px;width:24px;top:11px}
-.statusbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;background:#1d2b22;border-top:1px solid #465744;flex-wrap:wrap}
-#feedback{font-size:13px;color:#c3ceb5}.actions{display:flex;gap:8px;flex-wrap:wrap}
-button{font:600 13px Outfit,sans-serif;border:1px solid #637653;border-radius:9px;padding:10px 15px;background:#304331;color:var(--ink);cursor:pointer}
-button.primary{background:var(--lime);color:#1d291d;border-color:var(--lime)}button:disabled{opacity:.4;cursor:not-allowed}button:hover:not(:disabled){filter:brightness(1.1)}
-.help{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;color:#aab69d;font:11px 'DM Mono',monospace}.help span{display:flex;align-items:center;gap:7px}.key{border:1px solid #52654e;border-radius:5px;padding:3px 6px;color:#e6edcf}
-.overlay{position:absolute;inset:0;display:none;place-items:center;background:#101a14b8;backdrop-filter:blur(5px);text-align:center;padding:20px}.overlay.show{display:grid}.overlay-card{max-width:420px;padding:28px;border:1px solid #71825a;background:#1c2a20ed;border-radius:16px;box-shadow:0 20px 50px #0008}.overlay h2{font-size:34px;margin:0 0 7px}.overlay p{color:#b8c4ad;margin:0 0 18px}
-@media(max-width:650px){main{padding:15px 10px 24px}header{margin-bottom:13px}.hint-top{display:none}#game{height:58vh;min-height:350px}.stat{padding:8px 10px}.statusbar{align-items:flex-start}.actions{width:100%}.actions button{flex:1}.help{gap:10px}}
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{--bg:#17151d;--panel:#24212d;--line:#494252;--gold:#f2c66d;--mint:#a9e4c1;--pink:#f28fc2;--text:#f5efdf;--muted:#aaa1b3}
+*{box-sizing:border-box}html{min-height:100%;background:var(--bg)}body{margin:0;min-height:100vh;color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;background:radial-gradient(ellipse at 52% -20%,#59445c 0,transparent 47%),radial-gradient(ellipse at 100% 80%,#263f43 0,transparent 38%),#17151d}
+button{font:600 13px inherit;font-family:inherit;color:var(--text);background:#34303e;border:1px solid #5b5364;border-radius:10px;padding:10px 13px;cursor:pointer;transition:transform .14s,border-color .14s,filter .14s}button:hover:not(:disabled){transform:translateY(-2px);border-color:var(--gold);filter:brightness(1.12)}button:active:not(:disabled){transform:translateY(0)}button:disabled{opacity:.38;cursor:not-allowed}.primary{background:var(--gold);color:#2b2115;border-color:var(--gold)}.pink{background:#623d5b;border-color:#a66a9a}.mono{font-family:'DM Mono',monospace;font-variant-numeric:tabular-nums}
+header{max-width:1500px;margin:auto;padding:20px 24px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{font-weight:700;letter-spacing:.16em;font-size:12px;color:var(--gold)}.logo b{color:var(--text)}.tagline{font:10px 'DM Mono',monospace;color:var(--muted);letter-spacing:.12em}
+.layout{max-width:1500px;margin:auto;padding:0 24px 26px;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;align-items:start}
+.maincol{min-width:0}.titleline{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:2px 0 13px}.titleline h1{font-size:clamp(27px,4vw,44px);line-height:.95;letter-spacing:-.06em;margin:0}.titleline h1 em{font-style:normal;color:var(--gold)}.microcopy{font:10px 'DM Mono',monospace;color:var(--muted);text-align:right}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:10px}.stat{background:linear-gradient(140deg,#302b3a,#211f2a);border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:0 9px 25px #08070c44}.stat label{display:block;font:9px 'DM Mono',monospace;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}.stat strong{display:block;margin-top:3px;font-size:clamp(19px,2.5vw,27px);letter-spacing:-.04em}.stat strong.gold{color:var(--gold)}.stat strong.mint{color:var(--mint)}
+.scene-wrap{position:relative;border:1px solid #5b5060;border-radius:16px;overflow:hidden;background:#262334;box-shadow:0 22px 55px #08070c77}
+#scene{display:block;width:100%;height:clamp(330px,51vw,560px);touch-action:manipulation;cursor:crosshair}
+.scene-label{position:absolute;left:14px;top:13px;padding:7px 10px;border:1px solid #ffffff30;border-radius:7px;background:#17151d99;backdrop-filter:blur(6px);font:9px 'DM Mono',monospace;letter-spacing:.12em;color:#f5e8c7;pointer-events:none}
+.scene-label.right{left:auto;right:14px;color:#c2f3d5}
+.scene-footer{background:#211e29;border-top:1px solid #4a4352;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.feedback{font-size:12px;color:#c5bacb}.scene-actions{display:flex;gap:8px;flex-wrap:wrap}
+.sellbar{margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;background:linear-gradient(100deg,#283b36,#292536);border:1px solid #52685e;border-radius:12px}.sellbar small{display:block;color:var(--muted);font:9px 'DM Mono',monospace;letter-spacing:.12em}.sellbar strong{font-size:20px;color:var(--mint)}.sellbar button{min-width:145px}
+.sidebar{background:linear-gradient(155deg,#2b2735,#201e29);border:1px solid var(--line);border-radius:15px;overflow:hidden;position:sticky;top:12px;box-shadow:0 15px 38px #08070c55}.sidehead{padding:15px 16px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.sidehead h2{margin:0;font-size:16px;letter-spacing:-.03em}.sidehead span{font:9px 'DM Mono',monospace;color:var(--gold);letter-spacing:.1em}.upgrade-list{padding:10px;display:grid;gap:8px;max-height:calc(100vh - 160px);overflow:auto}.upgrade{padding:11px;border:1px solid #4b4455;background:#302c39;border-radius:10px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.upgrade h3{font-size:13px;margin:0 0 3px}.upgrade p{font-size:10px;color:var(--muted);margin:0;line-height:1.35}.upgrade .cost{font:10px 'DM Mono',monospace;color:var(--gold);margin-top:5px}.upgrade button{font-size:10px;padding:8px 10px;min-width:74px}.tier{font:9px 'DM Mono',monospace;color:var(--mint);letter-spacing:.1em;margin:6px 2px 0}
+.hint{padding:10px 14px 13px;color:var(--muted);font:10px 'DM Mono',monospace;line-height:1.5;border-top:1px solid var(--line)}
+.toast{position:fixed;z-index:5;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#f2c66d;color:#211b20;border-radius:10px;padding:11px 16px;font-weight:700;font-size:13px;box-shadow:0 8px 30px #0008;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.victory{position:fixed;inset:0;z-index:10;background:#100e18eF;display:none;place-items:center;padding:20px;text-align:center;backdrop-filter:blur(12px)}.victory.show{display:grid}.win-card{max-width:560px;padding:clamp(24px,5vw,48px);border:1px solid #d9b76b;background:linear-gradient(145deg,#3a2c40,#1d202a);border-radius:22px;box-shadow:0 0 100px #f2c66d35}.win-card .eyebrow{font:10px 'DM Mono',monospace;letter-spacing:.25em;color:var(--mint)}.win-card h2{font-size:clamp(42px,9vw,76px);line-height:.88;letter-spacing:-.08em;color:var(--gold);margin:18px 0}.win-card p{color:#d4c9d6;line-height:1.6}.win-card button{margin-top:14px}
+@media(max-width:950px){.layout{grid-template-columns:minmax(0,1fr) 285px;gap:10px;padding:0 14px 20px}header{padding:16px 14px 12px}}
+@media(max-width:720px){.layout{grid-template-columns:1fr}.sidebar{position:static}.upgrade-list{max-height:none;grid-template-columns:repeat(2,minmax(0,1fr))}.upgrade{grid-template-columns:1fr}.upgrade button{width:100%}.titleline{align-items:start}.microcopy{max-width:115px}.stats{gap:6px}.stat{padding:9px}.scene-footer{align-items:flex-start}.scene-actions{width:100%}.scene-actions button{flex:1}#scene{height:390px}}
+@media(max-width:430px){header{padding:14px 11px 10px}.tagline{display:none}.layout{padding:0 10px 18px}.upgrade-list{grid-template-columns:1fr}.titleline h1{font-size:29px}.microcopy{font-size:8px}.stats .stat label{font-size:8px}.stats .stat strong{font-size:18px}.sellbar{align-items:flex-start;flex-direction:column}.sellbar button{width:100%}}
 </style>
 </head>
 <body>
-<main>
-<header><div class="brand">FIELDWORK <span>/ HIDDEN OBJECTS</span></div><div class="hint-top">LOW-POLY EXPLORATION · FIND THE NEEDLE</div></header>
-<h1>Needle in the Hayfield<span style="color:var(--lime)">.</span></h1>
-<p class="intro">A tiny piece of metal. A whole lot of straw. Take a look around.</p>
-<section class="hud" aria-live="polite">
- <div class="stat"><small>Time remaining</small><strong id="time">90.0s</strong></div>
- <div class="stat"><small>Score</small><strong id="score">0</strong></div>
- <div class="stat"><small>Field</small><strong id="level">01</strong></div>
- <div class="stat"><small>Scans</small><strong id="hints">3</strong></div>
+<header><div class="logo">HAYWIRE <b>// NEEDLE FEVER</b></div><div class="tagline">A VERY NORMAL AMOUNT OF HAY · BUILD 0005</div></header>
+<div class="layout">
+<section class="maincol">
+ <div class="titleline"><h1>THE <em>HAY</em> DIMENSION</h1><div class="microcopy">NO MENU. NO ESCAPE.<br>JUST MORE HAY.</div></div>
+ <div class="stats">
+  <div class="stat"><label>Remaining hay</label><strong class="gold mono" id="remaining">5,000,000</strong></div>
+  <div class="stat"><label>Wallet balance</label><strong class="mint mono" id="money">$0.00</strong></div>
+  <div class="stat"><label>Automation rate</label><strong class="mono" id="rate">0 / sec</strong></div>
+ </div>
+ <div class="scene-wrap"><canvas id="scene" aria-label="Low-poly hay pile. Click to sift hay."></canvas><div class="scene-label">SECTOR 01 / STRAW REALITY</div><div class="scene-label right" id="mode">MANUAL LABOR</div>
+  <div class="scene-footer"><span class="feedback" id="feedback">Click the hay mountain. Become one with the straw.</span><div class="scene-actions"><button id="sift" class="primary">✦ Sift hay</button><button id="sell">Sell stored hay</button></div></div>
+ </div>
+ <div class="sellbar"><div><small>UNPROCESSED HAY IN YOUR CART</small><strong class="mono" id="inventory">0 strands</strong></div><button id="autoSell" class="pink">Auto-sell: OFF</button></div>
 </section>
-<section class="game-shell">
- <div id="game" aria-label="Interactive 3D low-poly hayfield"></div><div class="crosshair"></div>
- <div class="overlay" id="overlay"><div class="overlay-card"><h2 id="endTitle">Field cleared</h2><p id="endText">You found the needle.</p><button class="primary" id="again">Explore again</button></div></div>
- <div class="statusbar"><span id="feedback">The field is yours. Find the needle.</span><div class="actions"><button id="scan">Pulse scan · 3</button><button id="reset">Restart field</button></div></div>
-</section>
-<div class="help"><span><b class="key">DRAG</b> orbit camera</span><span><b class="key">CLICK / TAP</b> search a spot</span><span><b class="key">SCROLL</b> zoom</span><span><b class="key">SCAN</b> get a clue</span></div>
-</main>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
-<script type="module">
-import * as THREE from 'three';
-
-const host=document.querySelector('#game');
-const scene=new THREE.Scene();scene.background=new THREE.Color('#a8bd91');scene.fog=new THREE.Fog('#a8bd91',22,58);
-const camera=new THREE.PerspectiveCamera(48,1,.1,120);
-const renderer=new THREE.WebGLRenderer({antialias:true, powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;host.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight('#eff6d9','#6a5636',2.1));
-const sun=new THREE.DirectionalLight('#fff0c8',3.1);sun.position.set(-9,17,8);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-22;sun.shadow.camera.right=22;sun.shadow.camera.top=22;sun.shadow.camera.bottom=-22;scene.add(sun);
-const mat=(color,roughness=1)=>new THREE.MeshStandardMaterial({color,roughness,flatShading:true});
-const groundMat=mat('#718b55'), strawMats=['#d5a34e','#e2b75e','#c68b3d','#edc978','#b97d35','#dba94f'].map(c=>mat(c));
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),groundMat);ground.rotation.x=-Math.PI/2;ground.position.y=-.16;ground.receiveShadow=true;scene.add(ground);
-const hayGroup=new THREE.Group();scene.add(hayGroup);\nconst decorGroup=new THREE.Group();scene.add(decorGroup);
-const needleGroup=new THREE.Group();scene.add(needleGroup);
-const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
-const searchPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);let targetPoint=new THREE.Vector3();
-let needlePos=new THREE.Vector3(),needleMesh=null,level=1,score=0,scans=3,timeLeft=90,playing=true,dragging=false,downX=0,downY=0,lastX=0,lastY=0,theta=.55,phi=1.02,radius=19,lastTick=performance.now(),pulseUntil=0;
+<aside class="sidebar">
+ <div class="sidehead"><h2>Workshop / Upgrades</h2><span>BUY POWER</span></div>
+ <div class="upgrade-list" id="upgrades"></div>
+ <div class="hint">Every strand sold is worth $0.01 before bonuses. The needle has a microscopic chance to appear on every sift — and a guaranteed appearance when the field is empty. Progress saves in this browser.</div>
+</aside>
+</div>
+<div class="toast" id="toast"></div>
+<div class="victory" id="victory"><div class="win-card"><div class="eyebrow">AN IMPOSSIBLE STATISTICAL EVENT</div><h2>NEEDLE<br>FOUND!</h2><p>You sifted through the impossible. Five million strands, countless clicks, and one tiny piece of metal. The hay dimension will remember you.</p><p class="mono" id="finalStats"></p><button class="primary" id="newRun">Start a new hay dimension</button></div></div>
+<script>
+(()=>{
+'use strict';
+const START_HAY=5_000_000,VALUE=.01,STORE='haywire-fever-v1';
 const $=id=>document.getElementById(id);
-function random(min,max){return min+Math.random()*(max-min)}
-function addHay(x,z,sx,sy,sz,material,rot=0){
- const geo=new THREE.IcosahedronGeometry(1,1);const mesh=new THREE.Mesh(geo,material);mesh.position.set(x,sy*.62,z);mesh.scale.set(sx,sy,sz);mesh.rotation.y=rot;mesh.rotation.z=random(-.22,.22);mesh.castShadow=true;mesh.receiveShadow=true;hayGroup.add(mesh);return mesh;
+const gameState={
+ hayRemaining:START_HAY,money:0,inventory:0,manualPower:1,moneyMult:1,automation:0,scanner:0,
+ autoSell:false,needleFound:false,totalSifted:0,totalSold:0,clicks:0,upgrades:{}
+};
+const definitions=[
+ {id:'shovel',name:'Bent Spoon → Shovel',desc:'Manual power +9. Your wrists file a complaint.',cost:2.5,effect:'power',amount:9,tier:'HAND TOOLS'},
+ {id:'spade',name:'Industrial Spade',desc:'Manual power +40. Dig with theatrical confidence.',cost:45,effect:'power',amount:40,tier:'HAND TOOLS'},
+ {id:'pitchfork',name:'Fork of Destiny',desc:'Manual power +210. A haystorm in your palm.',cost:420,effect:'power',amount:210,tier:'HAND TOOLS'},
+ {id:'gloves',name:'Golden Work Gloves',desc:'All hay sales pay 2× more.',cost:90,effect:'money',amount:1,tier:'BODY MODS'},
+ {id:'stamina',name:'Infinite Elbow',desc:'Sales value +3×. This is probably not ergonomic.',cost:750,effect:'money',amount:3,tier:'BODY MODS'},
+ {id:'belt',name:'Conveyor Belt',desc:'Automatically sifts 10 strands per second.',cost:125,effect:'auto',amount:10,tier:'AUTOMATION'},
+ {id:'sorter',name:'Hay Sorting Engine',desc:'Automates 100 strands per second.',cost:950,effect:'auto',amount:100,tier:'AUTOMATION'},
+ {id:'robot',name:'Robotic Hay Goblin',desc:'Automates 1,000 strands per second.',cost:8500,effect:'auto',amount:1000,tier:'AUTOMATION'},
+ {id:'mech',name:'Mecha-Barn Mk. IV',desc:'Automates 10,000 strands per second.',cost:85000,effect:'auto',amount:10000,tier:'AUTOMATION'},
+ {id:'magnet',name:'Magnetic Metal Scanner',desc:'Raises the needle discovery chance on every sift.',cost:1800,effect:'scan',amount:1,tier:'ODD SCIENCE'},
+ {id:'quantum',name:'Quantum Hay Resonator',desc:'A second scanner boost. Reality becomes less hay-shaped.',cost:18000,effect:'scan',amount:5,tier:'ODD SCIENCE'}
+];
+const canvas=$('scene'),ctx=canvas.getContext('2d');let cw=0,ch=0,dpr=1,particles=[],ambient=[],last=performance.now(),lastSave=0,toastTimer=0;
+let pointer={x:0,y:0,down:false};
+function fmt(n){return Math.floor(n).toLocaleString('en-US')}
+function money(n){return '$'+n.toFixed(2)}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(gameState))}catch(e){}}
+function load(){try{const v=JSON.parse(localStorage.getItem(STORE)||'null');if(v&&v.hayRemaining>=0){Object.assign(gameState,v);gameState.upgrades=v.upgrades||{};}}catch(e){}}
+function notify(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),1800)}
+function makeUpgrades(){
+ const root=$('upgrades');root.innerHTML='';let previous='';
+ definitions.forEach(d=>{
+  if(d.tier!==previous){const t=document.createElement('div');t.className='tier';t.textContent=d.tier;root.append(t);previous=d.tier;}
+  const count=gameState.upgrades[d.id]||0,price=d.cost*Math.pow(1.72,count);
+  const card=document.createElement('div');card.className='upgrade';
+  const info=document.createElement('div'),title=document.createElement('h3'),desc=document.createElement('p'),cost=document.createElement('div');
+  title.textContent=d.name+(count?'  ×'+count:'');desc.textContent=d.desc;cost.className='cost';cost.textContent='COST  '+money(price);
+  info.append(title,desc,cost);
+  const btn=document.createElement('button');btn.textContent='INSTALL';btn.disabled=gameState.money<price||gameState.needleFound;
+  btn.addEventListener('click',()=>buy(d,price));card.append(info,btn);root.append(card);
+ });
 }
-function makeField(){
- hayGroup.clear();decorGroup.clear();needleGroup.clear();needleMesh=null;
- // A broad, irregular low-poly mound made from overlapping straw bales.
- for(let i=0;i<135+level*25;i++){
-  const angle=random(0,Math.PI*2),rad=Math.sqrt(Math.random())*9.2;
-  const x=Math.cos(angle)*rad,z=Math.sin(angle)*rad;
-  const mound=Math.max(0,1-rad/10);
-  const sx=random(.7,1.65),sy=random(.45,1.05)+mound*.45,sz=random(.7,1.6);
-  addHay(x,z,sx,sy,sz,strawMats[Math.floor(Math.random()*strawMats.length)],random(0,Math.PI));
- }
- // Little angular straw tufts around the edges.
- for(let i=0;i<210;i++){
-  const x=random(-15,15),z=random(-13,13),h=random(.2,.8);
-  const tuft=new THREE.Mesh(new THREE.ConeGeometry(random(.08,.18),h,5),strawMats[Math.floor(Math.random()*strawMats.length)]);
-  tuft.position.set(x,h/2-.05,z);tuft.rotation.z=random(-.4,.4);tuft.rotation.x=random(-.3,.3);tuft.castShadow=true;hayGroup.add(tuft);
- }
- // Low-poly fence posts and rails frame the field.
- const wood=mat('#725032');
- for(let side of [-1,1])for(let i=0;i<9;i++){
-  const z=-12+i*3;const post=new THREE.Mesh(new THREE.BoxGeometry(.22,1.3,.22),wood);post.position.set(side*15,.5,z);post.castShadow=true;decorGroup.add(post);
- }
- // The needle rests almost flush against the ground, tucked among the straw.
- needlePos.set(random(-8,8),.12,random(-7,7));
- const steel=mat('#d8e0d5',.35),red=mat('#a94b3d',.6);
- needleMesh=new THREE.Group();
- const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,1.05,6),steel);shaft.rotation.z=Math.PI/2;shaft.position.x=.05;needleMesh.add(shaft);
- const eye=new THREE.Mesh(new THREE.TorusGeometry(.105,.025,5,8),steel);eye.position.x=-.49;needleMesh.add(eye);
- const tip=new THREE.Mesh(new THREE.ConeGeometry(.045,.2,5),red);tip.rotation.z=-Math.PI/2;tip.position.x=.66;needleMesh.add(tip);
- needleMesh.position.copy(needlePos);needleMesh.rotation.y=random(0,Math.PI);needleGroup.add(needleMesh);
- // A few foreground rocks give the scene scale.
- const rockMat=mat('#68765a');
- for(let i=0;i<16;i++){const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(random(.2,.5),0),rockMat);rock.position.set(random(-14,14),-.02,random(-13,13));rock.scale.y=.55;rock.castShadow=true;decorGroup.add(rock);}
+function buy(d,price){if(gameState.money+1e-9<price||gameState.needleFound)return;gameState.money-=price;gameState.upgrades[d.id]=(gameState.upgrades[d.id]||0)+1;
+ if(d.effect==='power')gameState.manualPower+=d.amount;
+ if(d.effect==='money')gameState.moneyMult+=d.amount;
+ if(d.effect==='auto')gameState.automation+=d.amount;
+ if(d.effect==='scan')gameState.scanner+=d.amount;
+ notify(d.name+' installed');makeUpgrades();updateUI();save();}
+function updateUI(){
+ $('remaining').textContent=fmt(gameState.hayRemaining);$('money').textContent=money(gameState.money);
+ $('rate').textContent=fmt(gameState.automation)+' / sec';$('inventory').textContent=fmt(gameState.inventory)+' strands';
+ $('mode').textContent=gameState.automation?'AUTOMATION ONLINE':'MANUAL LABOR';
+ $('sift').textContent='✦ Sift '+fmt(gameState.manualPower);
+ $('sift').disabled=gameState.needleFound||gameState.hayRemaining<=0;
+ $('sell').disabled=gameState.inventory<=0;$('autoSell').textContent='Auto-sell: '+(gameState.autoSell?'ON':'OFF');
+ $('autoSell').classList.toggle('primary',gameState.autoSell);
 }
-function setCamera(){const x=radius*Math.sin(phi)*Math.sin(theta),y=radius*Math.cos(phi),z=radius*Math.sin(phi)*Math.cos(theta);camera.position.set(x,y,z);camera.lookAt(0,.1,0);}
-function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
-function hud(){$('time').textContent=timeLeft.toFixed(1)+'s';$('score').textContent=score;$('level').textContent=String(level).padStart(2,'0');$('hints').textContent=scans;$('scan').textContent='Pulse scan · '+scans;$('scan').disabled=!playing||scans<=0;}
-function endGame(found){playing=false;$('overlay').classList.add('show');$('endTitle').textContent=found?'Needle located!':'Field search ended';$('endText').textContent=found?'Sharp eyes. Field score: '+score+'.':'The needle was tucked away in the straw. Final score: '+score+'.';needleGroup.visible=true;hud();}
-function newRound(){level++;timeLeft=Math.min(105,timeLeft+22);score+=Math.max(80,Math.round(timeLeft*5));makeField();needleGroup.visible=true;$('feedback').textContent='Found it! The next patch is denser.';hud();}
-function searchAt(clientX,clientY){
- if(!playing)return;const r=renderer.domElement.getBoundingClientRect();pointer.x=((clientX-r.left)/r.width)*2-1;pointer.y=-((clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);raycaster.ray.intersectPlane(searchPlane,targetPoint);
- const d=Math.hypot(targetPoint.x-needlePos.x,targetPoint.z-needlePos.z);
- if(d<1.05){newRound();return;}
- timeLeft=Math.max(0,timeLeft-1.4);
- $('feedback').textContent=d<2.7?'Very close. Check the straw around there.':d<5?'Warm — you are in the right patch.':'No luck. Sweep the field and try again.';
- hud();if(timeLeft<=0)endGame(false);
+function addParticles(x,y,n){for(let i=0;i<Math.min(40,Math.max(4,Math.sqrt(n)*1.5));i++){particles.push({x,y,vx:(Math.random()-.5)*180,vy:-30-Math.random()*150,life:.6+Math.random()*.9,size:2+Math.random()*5,hue:Math.random()<.75?'gold':'pink',rot:Math.random()*6});}}
+function sift(amount,manual=false){
+ if(gameState.needleFound||gameState.hayRemaining<=0)return;
+ const actual=Math.min(gameState.hayRemaining,Math.max(1,Math.floor(amount)));
+ gameState.hayRemaining-=actual;gameState.inventory+=actual;gameState.totalSifted+=actual;if(manual)gameState.clicks++;
+ const chance=1/1_500_000+gameState.scanner/30_000_000;
+ const found=gameState.hayRemaining===0||Math.random()<chance;
+ addParticles(pointer.x||cw*.5,pointer.y||ch*.52,actual);
+ if(found){gameState.needleFound=true;gameState.hayRemaining=0;needleVictory();return;}
+ if(manual)$('feedback').textContent='+'+fmt(actual)+' hay collected. The pile whispers back.';
+ updateUI();
 }
-renderer.domElement.addEventListener('pointerdown',e=>{dragging=true;downX=lastX=e.clientX;downY=lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId);});
-renderer.domElement.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;if(Math.hypot(e.clientX-downX,e.clientY-downY)>5){theta-=dx*.006;phi=THREE.MathUtils.clamp(phi+dy*.005,.48,1.38);setCamera();}});
-renderer.domElement.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;if(Math.hypot(e.clientX-downX,e.clientY-downY)<7)searchAt(e.clientX,e.clientY);});
-renderer.domElement.addEventListener('pointercancel',()=>dragging=false);
-renderer.domElement.addEventListener('wheel',e=>{radius=THREE.MathUtils.clamp(radius+e.deltaY*.012,12,29);setCamera();},{passive:true});
-$('scan').addEventListener('click',()=>{if(!playing||scans<=0)return;scans--;pulseUntil=performance.now()+2400;$('feedback').textContent='Pulse scan: listen to the clue — the needle is somewhere near the glowing patch.';hud();});
-$('reset').addEventListener('click',()=>{level=1;score=0;scans=3;timeLeft=90;playing=true;$('overlay').classList.remove('show');needleGroup.visible=true;makeField();$('feedback').textContent='A fresh field. Start searching.';hud();});
-$('again').addEventListener('click',()=>{$('reset').click();});
-makeField();setCamera();resize();new ResizeObserver(resize).observe(host);hud();
-function animate(now){requestAnimationFrame(animate);const dt=Math.min(.05,(now-lastTick)/1000);lastTick=now;
- if(playing){timeLeft-=dt;if(timeLeft<=0){timeLeft=0;endGame(false);}hud();}
- if(now<pulseUntil){const pulse=Math.sin(now*.012)*.5+.5;needleMesh?.scale.setScalar(1+pulse*.55);needleGroup.visible=true;}else if(needleMesh){needleMesh.scale.setScalar(1);needleGroup.visible=false;}
- renderer.render(scene,camera);
-}requestAnimationFrame(animate);
+function sell(){if(gameState.inventory<=0)return;const n=gameState.inventory;gameState.inventory=0;const earned=n*VALUE*gameState.moneyMult;gameState.money+=earned;gameState.totalSold+=n;$('feedback').textContent='Sold '+fmt(n)+' strands for '+money(earned)+'. The cart is empty.';updateUI();makeUpgrades();save();addParticles(cw*.84,ch*.76,Math.min(n,4000));}
+function needleVictory(){updateUI();$('finalStats').textContent=fmt(gameState.totalSifted)+' HAY SIFTED  //  '+money(gameState.money)+' WALLET';$('victory').classList.add('show');$('feedback').textContent='THE NEEDLE. IT IS REAL.';save();}
+function resetRun(){Object.assign(gameState,{hayRemaining:START_HAY,money:0,inventory:0,manualPower:1,moneyMult:1,automation:0,scanner:0,autoSell:false,needleFound:false,totalSifted:0,totalSold:0,clicks:0,upgrades:{}});$('victory').classList.remove('show');particles=[];makeUpgrades();updateUI();save();notify('A fresh dimension. Five million fresh strands.');}
+function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);cw=r.width;ch=r.height;canvas.width=Math.round(cw*dpr);canvas.height=Math.round(ch*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);ambient=Array.from({length:75},()=>({x:Math.random()*cw,y:Math.random()*ch,r:Math.random()*2+0.4,p:Math.random()*6.28,s:8+Math.random()*22}));}
+function poly(points,fill,stroke=null){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();}}
+function drawHayPile(t){
+ const cx=cw*.5,base=ch*.79,scale=Math.min(cw/650,ch/450),rx=Math.min(cw*.43,310),ry=Math.min(ch*.37,185);
+ // dream sky, distant angular moons and impossible geometry
+ const sky=ctx.createLinearGradient(0,0,0,ch);sky.addColorStop(0,'#343044');sky.addColorStop(.55,'#5b4560');sky.addColorStop(1,'#c07b64');ctx.fillStyle=sky;ctx.fillRect(0,0,cw,ch);
+ ctx.save();ctx.globalAlpha=.8;ctx.fillStyle='#f4c9a0';ctx.beginPath();ctx.arc(cw*.82,ch*.17,Math.min(37,cw*.07),0,Math.PI*2);ctx.fill();ctx.globalAlpha=.16;ctx.beginPath();ctx.arc(cw*.82,ch*.17,Math.min(62,cw*.1),0,Math.PI*2);ctx.fill();ctx.restore();
+ for(let i=0;i<7;i++){const x=(i*173+t*.004)% (cw+180)-90,y=ch*(.23+(i%3)*.07);poly([[x,y],[x+38,y-16],[x+75,y],[x+38,y+14]],i%2?'#8e7185':'#71827e');}
+ // floor plane
+ poly([[0,ch*.67],[cw,ch*.62],[cw,ch],[0,ch]],'#34313c');
+ for(let i=0;i<9;i++){ctx.strokeStyle='#d1a16b18';ctx.beginPath();ctx.moveTo(0,ch*(.7+i*.045));ctx.lineTo(cw,ch*(.66+i*.045));ctx.stroke();}
+ // mound shadow
+ ctx.fillStyle='#17141d88';ctx.beginPath();ctx.ellipse(cx,base+13,rx*1.08,ry*.34,0,0,Math.PI*2);ctx.fill();
+ // stacked polygon facets make the mound feel chunky and dimensional
+ const fullness=Math.max(.08,gameState.hayRemaining/START_HAY);
+ const wobble=Math.sin(t*.0006)*4;
+ const layers=Array.from({length:6},(_,i)=>i);
+ layers.forEach(i=>{const f=1-i*.135,yy=base-ry*(.16+i*.115)+wobble*(i/6);const wide=rx*f*(.65+.35*fullness);poly([[cx-wide,yy+ry*.22],[cx-wide*.83,yy-ry*.3],[cx-wide*.42,yy-ry*.63],[cx+wide*.13,yy-ry*.78],[cx+wide*.72,yy-ry*.49],[cx+wide,yy+ry*.12],[cx+wide*.62,yy+ry*.35],[cx-wide*.55,yy+ry*.38]],['#bd884a','#d6a45c','#c58b50','#e2b86e','#a96f4a','#d3a05c'][i], '#f4d18a24');});
+ // low poly hay flakes and straw blades
+ const count=Math.floor(Math.min(230,80+fullness*150));
+ for(let i=0;i<count;i++){
+  const a=(i*2.399+t*.000025),rr=Math.sqrt((i*37.71%count)/count),x=cx+Math.cos(a)*rx*.9*rr,y=base-ry*.08-Math.sin(a)*ry*.65*rr;
+  const len=5+(i*13%17),ang=(i*7.13)%Math.PI;
+  ctx.save();ctx.translate(x,y);ctx.rotate(ang);poly([[-len,0],[-len*.2,-2],[len,0],[len*.12,3]],['#f0cb79','#9d6946','#f6d58c','#b67b43'][i%4]);ctx.restore();
+ }
+ // top facets
+ poly([[cx-rx*.48,base-ry*.55],[cx-rx*.24,base-ry*.91],[cx+rx*.15,base-ry*.96],[cx+rx*.52,base-ry*.57],[cx+rx*.12,base-ry*.39]],'#edc779');
+ poly([[cx-rx*.48,base-ry*.55],[cx+rx*.12,base-ry*.39],[cx+rx*.52,base-ry*.57],[cx+rx*.4,base-ry*.22],[cx-rx*.24,base-ry*.2]],'#bd8149');
+ // glittering fever-dream motes
+ ambient.forEach((p,i)=>{const pulse=.35+.65*Math.sin(t*.001+p.p);ctx.globalAlpha=.15+pulse*.42;ctx.fillStyle=i%4===0?'#f8a5d2':i%3===0?'#b8f1d0':'#ffe3a1';ctx.beginPath();ctx.arc(p.x+Math.sin(t*.0003+p.p)*p.s,p.y+Math.cos(t*.0004+p.p)*p.s,p.r*(.6+pulse),0,Math.PI*2);ctx.fill();});ctx.globalAlpha=1;
+ // distant low-poly grass
+ for(let i=0;i<30;i++){const x=(i*83+17)%cw,y=ch*.76+(i%5)*7;poly([[x,y],[x-5,y-13-(i%4)*4],[x+2,y-7],[x+7,y-18],[x+5,y]],i%2?'#7f9a6c':'#a3a06c');}
+}
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+ if(!gameState.needleFound&&gameState.automation>0&&gameState.hayRemaining>0){const n=gameState.automation*dt;const whole=Math.floor(n+(frame.remainder||0));frame.remainder=(n+(frame.remainder||0))-whole;if(whole>0)sift(whole,false);}
+ if(gameState.autoSell&&gameState.inventory>=100)sell();
+ if(now-lastSave>5000){save();lastSave=now;}
+ ctx.clearRect(0,0,cw,ch);drawHayPile(now);
+ particles=particles.filter(p=>p.life>0);particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=90*dt;p.life-=dt;ctx.save();ctx.globalAlpha=Math.max(0,p.life);ctx.translate(p.x,p.y);ctx.rotate(p.rot+=dt*4);ctx.fillStyle=p.hue==='gold'?'#f2c66d':'#f28fc2';ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.7);ctx.restore();});
+ requestAnimationFrame(frame);
+}
+function siftFromCanvas(e){if(gameState.needleFound)return;const r=canvas.getBoundingClientRect();pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top;sift(gameState.manualPower,true);}
+canvas.addEventListener('pointerdown',siftFromCanvas);
+$('sift').addEventListener('click',()=>sift(gameState.manualPower,true));
+$('sell').addEventListener('click',sell);
+$('autoSell').addEventListener('click',()=>{gameState.autoSell=!gameState.autoSell;updateUI();notify('Auto-sell '+(gameState.autoSell?'enabled':'disabled'));save();});
+$('newRun').addEventListener('click',resetRun);
+window.addEventListener('resize',resize);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save();});
+load();resize();makeUpgrades();updateUI();requestAnimationFrame(frame);
+})();
 </script>
-</body></html>
+</body>
+</html>
