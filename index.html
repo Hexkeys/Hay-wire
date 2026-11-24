@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17130e"><title>Needle in the Haystack</title>
+<style>
+:root{color-scheme:dark;--bg:#17130e;--panel:#242017;--gold:#e7b85b;--muted:#b6a88c;--cream:#f6e8c8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#40301b 0,#17130e 58%);color:var(--cream);font:16px/1.45 system-ui,sans-serif;min-height:100vh}
+main{max-width:1100px;margin:auto;padding:26px 20px 48px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800}.brand span{color:var(--cream)}
+h1{font-size:clamp(32px,6vw,56px);line-height:1.02;margin:24px 0 8px;letter-spacing:-.04em}.sub{color:var(--muted);margin:0 0 22px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.stat,.gamebox{background:#211c14;border:1px solid #59452a;border-radius:14px}.stat{padding:12px 15px}.stat small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.12em}.stat strong{font-size:23px;color:var(--gold);font-variant-numeric:tabular-nums}
+.gamebox{padding:12px;position:relative}.canvas-wrap{position:relative;overflow:hidden;border-radius:9px;background:#b77a32}canvas{display:block;width:100%;height:auto;cursor:crosshair;touch-action:manipulation}
+.overlay{position:absolute;inset:12px;display:none;place-items:center;background:#140f0dcc;border-radius:9px;text-align:center;padding:20px}.overlay.show{display:grid}.overlay h2{font-size:clamp(28px,5vw,44px);margin:0 0 8px}.overlay p{color:var(--muted);max-width:440px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:14px}.buttons{display:flex;gap:9px;flex-wrap:wrap}
+button{border:1px solid #896b39;border-radius:10px;padding:11px 16px;background:#342817;color:var(--cream);font-weight:700;cursor:pointer}button.primary{background:var(--gold);color:#21170a;border-color:var(--gold)}button:disabled{opacity:.4;cursor:not-allowed}button:hover:not(:disabled){filter:brightness(1.12)}
+.note{color:var(--muted);font-size:13px}.how{margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.how article{background:#211c14;border:1px solid #403322;border-radius:12px;padding:14px}.how b{color:var(--gold)}.how p{margin:5px 0 0;color:var(--muted);font-size:13px}
+@media(max-width:600px){main{padding:18px 12px 32px}.stats{grid-template-columns:repeat(2,1fr)}.how{grid-template-columns:1fr}.gamebox{padding:7px}.overlay{inset:7px}}
+</style></head>
+<body><main>
+<header class="top"><div class="brand">FIELD NOTES <span>/ HIDDEN OBJECTS</span></div><div class="note">A tiny patience test · Play in your browser</div></header>
+<h1>Needle in the<br>Haystack<span style="color:var(--gold)">.</span></h1><p class="sub">Somewhere in all that straw is one little needle. Can you spot it?</p>
+<section class="stats" aria-live="polite">
+<div class="stat"><small>Time left</small><strong id="time">60.0s</strong></div><div class="stat"><small>Score</small><strong id="score">0</strong></div><div class="stat"><small>Level</small><strong id="level">1</strong></div><div class="stat"><small>Hints</small><strong id="hints">3</strong></div>
+</section>
+<section class="gamebox"><div class="canvas-wrap"><canvas id="field" width="1000" height="600" aria-label="Illustrated haystack game area"></canvas><div class="overlay show" id="overlay"><div><h2 id="message">Ready to search?</h2><p id="detail">Find the tiny needle hidden among the golden strands. Click where you think it is. You have 60 seconds.</p><button class="primary" id="start">Start searching</button></div></div></div>
+<div class="controls"><span class="note" id="feedback">Look closely. The needle is small!</span><div class="buttons"><button id="hint">Use a hint (3)</button><button id="restart">Restart</button></div></div></section>
+<section class="how"><article><b>01 / Search</b><p>Click or tap the haystack where you spot the needle.</p></article><article><b>02 / Be sharp</b><p>Correct finds earn points. Wrong guesses cost a little time.</p></article><article><b>03 / Go deeper</b><p>Each level adds more straw and makes the needle harder to spot.</p></article></section>
+</main>
+<script>
+(()=>{
+const canvas=document.getElementById('field'),ctx=canvas.getContext('2d');
+const $=id=>document.getElementById(id);
+let running=false,remaining=60,score=0,level=1,hints=3,needle={x:0,y:0,a:0},straw=[],last=0,raf=0;
+const W=1000,H=600;
+function makeField(){
+ straw=[];const count=260+level*95;
+ for(let i=0;i<count;i++){let x=Math.random()*W,y=Math.random()*H;straw.push({x,y,len:16+Math.random()*65,a:(Math.random()-.5)*1.15,w:1+Math.random()*3,c:['#d69a43','#e8b85d','#bd792e','#f0c978','#9c6128','#dca951'][Math.floor(Math.random()*6)]});}
+ needle={x:90+Math.random()*820,y:70+Math.random()*460,a:Math.random()*Math.PI};
+ draw();
+}
+function draw(reveal=false){
+ ctx.clearRect(0,0,W,H);let g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#c98b3e');g.addColorStop(.5,'#e0aa51');g.addColorStop(1,'#a96c2d');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ for(const s of straw){ctx.save();ctx.translate(s.x,s.y);ctx.rotate(s.a);ctx.strokeStyle=s.c;ctx.lineWidth=s.w;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-s.len/2,0);ctx.quadraticCurveTo(0,-4,s.len/2,0);ctx.stroke();ctx.restore();}
+ // soft flecks add texture
+ for(let i=0;i<180;i++){let x=(i*137.5)%W,y=(i*83.7)%H;ctx.fillStyle='rgba(90,48,13,.12)';ctx.fillRect(x,y,2,2);}
+ if(reveal){ctx.save();ctx.translate(needle.x,needle.y);ctx.rotate(needle.a);ctx.strokeStyle='#e8e4d5';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-25,0);ctx.lineTo(25,0);ctx.stroke();ctx.strokeStyle='#b72d25';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(20,-2);ctx.lineTo(29,0);ctx.stroke();ctx.restore();}
+}
+function update(){ $('time').textContent=remaining.toFixed(1)+'s';$('score').textContent=score;$('level').textContent=level;$('hints').textContent=hints;$('hint').textContent='Use a hint ('+hints+')';$('hint').disabled=!running||hints<=0;}
+function finish(won){running=false;cancelAnimationFrame(raf);$('overlay').classList.add('show');$('message').textContent=won?'Needle found!':'Time is up!';$('detail').textContent=won?'Excellent spotting. Your score: '+score+'. Ready for another round?':'The needle was hiding at the marked spot. Final score: '+score+'. Give it another go!';$('start').textContent='Play again';draw(true);update();}
+function tick(t){if(!running)return;if(!last)last=t;remaining-=(t-last)/1000;last=t;if(remaining<=0){remaining=0;update();finish(false);return;}update();raf=requestAnimationFrame(tick);}
+function start(){cancelAnimationFrame(raf);remaining=60;score=0;level=1;hints=3;running=true;last=0;$('overlay').classList.remove('show');$('feedback').textContent='The search is on…';makeField();update();raf=requestAnimationFrame(tick);}
+function next(){score+=Math.max(50,Math.round(250+remaining*4));level++;remaining=Math.min(90,remaining+12);$('feedback').textContent='Found it! Level '+level+' — the haystack grows.';makeField();update();}
+canvas.addEventListener('pointerdown',e=>{if(!running)return;const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;const d=Math.hypot(x-needle.x,y-needle.y);
+ if(d<25){next();return;}remaining=Math.max(0,remaining-1.5);$('feedback').textContent=d<90?'So close! Try just nearby.':d<190?'Getting warmer…':'Not quite. Keep looking.';update();if(remaining<=0)finish(false);
+});
+$('hint').addEventListener('click',()=>{if(!running||hints<=0)return;hints--;let radius=115;ctx.save();ctx.beginPath();ctx.arc(needle.x,needle.y,radius,0,Math.PI*2);ctx.strokeStyle='rgba(255,246,190,.95)';ctx.lineWidth=5;ctx.setLineDash([12,9]);ctx.stroke();ctx.restore();$('feedback').textContent='A little area to search has been marked.';update();});
+$('start').addEventListener('click',start);$('restart').addEventListener('click',start);
+makeField();update();
+})();
+</script></body></html>
