@@ -158,7 +158,7 @@ function drawHayPile(t){
  for(let i=0;i<30;i++){const x=(i*83+17)%cw,y=ch*.76+(i%5)*7;poly([[x,y],[x-5,y-13-(i%4)*4],[x+2,y-7],[x+7,y-18],[x+5,y]],i%2?'#7f9a6c':'#a3a06c');}
 }
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
- if(!gameState.needleFound&&gameState.automation>0&&gameState.hayRemaining>0){const n=gameState.automation*dt;const whole=Math.floor(n+(frame.remainder||0));frame.remainder=(n+(frame.remainder||0))-whole;if(whole>0)sift(whole,false);}
+ if(!gameState.needleFound&&gameState.automation>0&&gameState.hayRemaining>0){frame.autoTimer=(frame.autoTimer||0)+dt;if(frame.autoTimer>=1){frame.autoTimer-=1;sift(gameState.automation,false);}}
  if(gameState.autoSell&&gameState.inventory>=100)sell();
  if(now-lastSave>5000){save();lastSave=now;}
  ctx.clearRect(0,0,cw,ch);drawHayPile(now);
