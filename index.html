@@ -62,7 +62,7 @@ const sun=new THREE.DirectionalLight('#fff0c8',3.1);sun.position.set(-9,17,8);su
 const mat=(color,roughness=1)=>new THREE.MeshStandardMaterial({color,roughness,flatShading:true});
 const groundMat=mat('#718b55'), strawMats=['#d5a34e','#e2b75e','#c68b3d','#edc978','#b97d35','#dba94f'].map(c=>mat(c));
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),groundMat);ground.rotation.x=-Math.PI/2;ground.position.y=-.16;ground.receiveShadow=true;scene.add(ground);
-const hayGroup=new THREE.Group();scene.add(hayGroup);
+const hayGroup=new THREE.Group();scene.add(hayGroup);\nconst decorGroup=new THREE.Group();scene.add(decorGroup);
 const needleGroup=new THREE.Group();scene.add(needleGroup);
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
 const searchPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);let targetPoint=new THREE.Vector3();
@@ -73,7 +73,7 @@ function addHay(x,z,sx,sy,sz,material,rot=0){
  const geo=new THREE.IcosahedronGeometry(1,1);const mesh=new THREE.Mesh(geo,material);mesh.position.set(x,sy*.62,z);mesh.scale.set(sx,sy,sz);mesh.rotation.y=rot;mesh.rotation.z=random(-.22,.22);mesh.castShadow=true;mesh.receiveShadow=true;hayGroup.add(mesh);return mesh;
 }
 function makeField(){
- hayGroup.clear();needleGroup.clear();needleMesh=null;
+ hayGroup.clear();decorGroup.clear();needleGroup.clear();needleMesh=null;
  // A broad, irregular low-poly mound made from overlapping straw bales.
  for(let i=0;i<135+level*25;i++){
   const angle=random(0,Math.PI*2),rad=Math.sqrt(Math.random())*9.2;
@@ -91,7 +91,7 @@ function makeField(){
  // Low-poly fence posts and rails frame the field.
  const wood=mat('#725032');
  for(let side of [-1,1])for(let i=0;i<9;i++){
-  const z=-12+i*3;const post=new THREE.Mesh(new THREE.BoxGeometry(.22,1.3,.22),wood);post.position.set(side*15,.5,z);post.castShadow=true;scene.add(post);
+  const z=-12+i*3;const post=new THREE.Mesh(new THREE.BoxGeometry(.22,1.3,.22),wood);post.position.set(side*15,.5,z);post.castShadow=true;decorGroup.add(post);
  }
  // The needle rests almost flush against the ground, tucked among the straw.
  needlePos.set(random(-8,8),.12,random(-7,7));
@@ -103,7 +103,7 @@ function makeField(){
  needleMesh.position.copy(needlePos);needleMesh.rotation.y=random(0,Math.PI);needleGroup.add(needleMesh);
  // A few foreground rocks give the scene scale.
  const rockMat=mat('#68765a');
- for(let i=0;i<16;i++){const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(random(.2,.5),0),rockMat);rock.position.set(random(-14,14),-.02,random(-13,13));rock.scale.y=.55;rock.castShadow=true;scene.add(rock);}
+ for(let i=0;i<16;i++){const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(random(.2,.5),0),rockMat);rock.position.set(random(-14,14),-.02,random(-13,13));rock.scale.y=.55;rock.castShadow=true;decorGroup.add(rock);}
 }
 function setCamera(){const x=radius*Math.sin(phi)*Math.sin(theta),y=radius*Math.cos(phi),z=radius*Math.sin(phi)*Math.cos(theta);camera.position.set(x,y,z);camera.lookAt(0,.1,0);}
 function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
