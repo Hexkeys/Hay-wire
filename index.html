@@ -52,9 +52,15 @@ function finish(won){running=false;cancelAnimationFrame(raf);$('overlay').classL
 function tick(t){if(!running)return;if(!last)last=t;const dt=Math.min(.05,(t-last)/1000);remaining-=dt;if(stickActive){aim.x=Math.max(24,Math.min(W-24,aim.x+stickVector.x*520*dt));aim.y=Math.max(24,Math.min(H-24,aim.y+stickVector.y*520*dt));draw();}last=t;if(remaining<=0){remaining=0;update();finish(false);return;}update();raf=requestAnimationFrame(tick);}
 function start(){cancelAnimationFrame(raf);aim={x:W/2,y:H/2};stickVector={x:0,y:0};stickActive=false;$('stickKnob').style.transform='translate(0,0)';remaining=60;score=0;level=1;hints=3;running=true;last=0;$('overlay').classList.remove('show');$('feedback').textContent='The search is on…';makeField();update();raf=requestAnimationFrame(tick);}
 function next(){score+=Math.max(50,Math.round(250+remaining*4));level++;remaining=Math.min(90,remaining+12);$('feedback').textContent='Found it! Level '+level+' — the haystack grows.';makeField();update();}
-canvas.addEventListener('pointerdown',e=>{if(!running)return;const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;const d=Math.hypot(x-needle.x,y-needle.y);
- if(d<25){next();return;}remaining=Math.max(0,remaining-1.5);$('feedback').textContent=d<90?'So close! Try just nearby.':d<190?'Getting warmer…':'Not quite. Keep looking.';update();if(remaining<=0)finish(false);
-});
+function searchAt(x,y){if(!running)return;const d=Math.hypot(x-needle.x,y-needle.y);if(d<25){next();return;}remaining=Math.max(0,remaining-1.5);$('feedback').textContent=d<90?'So close! Try just nearby.':d<190?'Getting warmer…':'Not quite. Keep looking.';update();if(remaining<=0)finish(false);}
+canvas.addEventListener('pointerdown',e=>{if(!running)return;const r=canvas.getBoundingClientRect();searchAt((e.clientX-r.left)/r.width*W,(e.clientY-r.top)/r.height*H);});
+const stick=$('stick'),knob=$('stickKnob');let stickPointer=null;
+function moveStick(e){if(stickPointer!==e.pointerId)return;const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=43,len=Math.hypot(dx,dy),scale=len>max?max/len:1,sx=dx*scale,sy=dy*scale;knob.style.transform=`translate(${sx}px,${sy}px)`;stickVector={x:sx/max,y:sy/max};}
+stick.addEventListener('pointerdown',e=>{if(!running)return;stickPointer=e.pointerId;stick.setPointerCapture(e.pointerId);stickActive=true;moveStick(e);});
+stick.addEventListener('pointermove',moveStick);
+function releaseStick(){stickPointer=null;stickActive=false;stickVector={x:0,y:0};knob.style.transform='translate(0,0)';}
+stick.addEventListener('pointerup',releaseStick);stick.addEventListener('pointercancel',releaseStick);
+$('searchBtn').addEventListener('click',()=>searchAt(aim.x,aim.y));
 $('hint').addEventListener('click',()=>{if(!running||hints<=0)return;hints--;let radius=115;ctx.save();ctx.beginPath();ctx.arc(needle.x,needle.y,radius,0,Math.PI*2);ctx.strokeStyle='rgba(255,246,190,.95)';ctx.lineWidth=5;ctx.setLineDash([12,9]);ctx.stroke();ctx.restore();$('feedback').textContent='A little area to search has been marked.';update();});
 $('start').addEventListener('click',start);$('restart').addEventListener('click',start);
 makeField();update();
