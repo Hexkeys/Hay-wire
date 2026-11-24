@@ -1,68 +1,136 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#17130e"><title>Needle in the Haystack</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#18251e">
+<title>Needle in the Hayfield</title>
 <style>
-:root{color-scheme:dark;--bg:#17130e;--panel:#242017;--gold:#e7b85b;--muted:#b6a88c;--cream:#f6e8c8}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#40301b 0,#17130e 58%);color:var(--cream);font:16px/1.45 system-ui,sans-serif;min-height:100vh}
-main{max-width:1100px;margin:auto;padding:26px 20px 48px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.brand{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800}.brand span{color:var(--cream)}
-h1{font-size:clamp(32px,6vw,56px);line-height:1.02;margin:24px 0 8px;letter-spacing:-.04em}.sub{color:var(--muted);margin:0 0 22px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.stat,.gamebox{background:#211c14;border:1px solid #59452a;border-radius:14px}.stat{padding:12px 15px}.stat small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.12em}.stat strong{font-size:23px;color:var(--gold);font-variant-numeric:tabular-nums}
-.gamebox{padding:12px;position:relative}.canvas-wrap{position:relative;overflow:hidden;border-radius:9px;background:#b77a32}canvas{display:block;width:100%;height:auto;cursor:crosshair;touch-action:manipulation}
-.overlay{position:absolute;inset:12px;display:none;place-items:center;background:#140f0dcc;border-radius:9px;text-align:center;padding:20px}.overlay.show{display:grid}.overlay h2{font-size:clamp(28px,5vw,44px);margin:0 0 8px}.overlay p{color:var(--muted);max-width:440px}
-.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:14px}.buttons{display:flex;gap:9px;flex-wrap:wrap}
-button{border:1px solid #896b39;border-radius:10px;padding:11px 16px;background:#342817;color:var(--cream);font-weight:700;cursor:pointer}button.primary{background:var(--gold);color:#21170a;border-color:var(--gold)}button:disabled{opacity:.4;cursor:not-allowed}button:hover:not(:disabled){filter:brightness(1.12)}
-.note{color:var(--muted);font-size:13px}.how{margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.how article{background:#211c14;border:1px solid #403322;border-radius:12px;padding:14px}.how b{color:var(--gold)}.how p{margin:5px 0 0;color:var(--muted);font-size:13px}
-@media(max-width:600px){main{padding:18px 12px 32px}.stats{grid-template-columns:repeat(2,1fr)}.how{grid-template-columns:1fr}.gamebox{padding:7px}.overlay{inset:7px}}\n.joystick-row{display:none;align-items:center;justify-content:space-between;gap:18px;padding:14px 8px 4px}.stick-base{width:132px;height:132px;flex:0 0 132px;border:2px solid #8b6a39;border-radius:50%;background:radial-gradient(circle,#47351f,#241b11);display:grid;place-items:center;touch-action:none;user-select:none}.stick-knob{width:54px;height:54px;border-radius:50%;background:linear-gradient(145deg,#f1cb7d,#b77c35);border:2px solid #ffe2a0;box-shadow:0 4px 12px #0008;pointer-events:none}.search-btn{min-width:112px;min-height:58px}.aim-note{color:var(--muted);font-size:12px;max-width:150px}@media(max-width:700px),(pointer:coarse){.joystick-row{display:flex}}
-</style></head>
-<body><main>
-<header class="top"><div class="brand">FIELD NOTES <span>/ HIDDEN OBJECTS</span></div><div class="note">A tiny patience test · Play in your browser</div></header>
-<h1>Needle in the<br>Haystack<span style="color:var(--gold)">.</span></h1><p class="sub">Somewhere in all that straw is one little needle. Can you spot it?</p>
-<section class="stats" aria-live="polite">
-<div class="stat"><small>Time left</small><strong id="time">60.0s</strong></div><div class="stat"><small>Score</small><strong id="score">0</strong></div><div class="stat"><small>Level</small><strong id="level">1</strong></div><div class="stat"><small>Hints</small><strong id="hints">3</strong></div>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap');
+:root{color-scheme:dark;--ink:#f4eedc;--muted:#a9b39e;--lime:#d6e58b;--panel:#202e25;--line:#465744}
+*{box-sizing:border-box}body{margin:0;background:#17231c;color:var(--ink);font-family:Outfit,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+main{max-width:1440px;margin:auto;padding:22px clamp(12px,3vw,38px) 30px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{font-weight:800;letter-spacing:.14em;font-size:13px;color:var(--lime)}.brand span{color:#f4eedc}
+.hint-top{font:11px 'DM Mono',monospace;color:var(--muted);letter-spacing:.08em}
+h1{font-size:clamp(28px,4vw,44px);line-height:1;margin:0 0 7px;letter-spacing:-.045em}.intro{color:var(--muted);margin:0 0 18px;font-size:14px}
+.hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:12px}
+.stat{background:linear-gradient(145deg,#29392d,#202d24);border:1px solid var(--line);border-radius:12px;padding:10px 14px;box-shadow:0 5px 18px #07120c55}
+.stat small{display:block;color:#aab69d;font:10px 'DM Mono',monospace;letter-spacing:.13em;text-transform:uppercase}.stat strong{display:block;font-size:clamp(19px,2.4vw,27px);font-weight:700;color:var(--lime);font-variant-numeric:tabular-nums}
+.game-shell{position:relative;border:1px solid #53684f;border-radius:16px;overflow:hidden;background:#9eb17a;box-shadow:0 20px 60px #07120c80}
+#game{width:100%;height:min(66vh,680px);min-height:390px;display:block;touch-action:none;cursor:crosshair}
+.crosshair{position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%);pointer-events:none;opacity:.8}
+.crosshair:before,.crosshair:after{content:"";position:absolute;background:#fff8d6;box-shadow:0 1px 4px #192318}.crosshair:before{width:2px;height:24px;left:11px}.crosshair:after{height:2px;width:24px;top:11px}
+.statusbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;background:#1d2b22;border-top:1px solid #465744;flex-wrap:wrap}
+#feedback{font-size:13px;color:#c3ceb5}.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{font:600 13px Outfit,sans-serif;border:1px solid #637653;border-radius:9px;padding:10px 15px;background:#304331;color:var(--ink);cursor:pointer}
+button.primary{background:var(--lime);color:#1d291d;border-color:var(--lime)}button:disabled{opacity:.4;cursor:not-allowed}button:hover:not(:disabled){filter:brightness(1.1)}
+.help{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;color:#aab69d;font:11px 'DM Mono',monospace}.help span{display:flex;align-items:center;gap:7px}.key{border:1px solid #52654e;border-radius:5px;padding:3px 6px;color:#e6edcf}
+.overlay{position:absolute;inset:0;display:none;place-items:center;background:#101a14b8;backdrop-filter:blur(5px);text-align:center;padding:20px}.overlay.show{display:grid}.overlay-card{max-width:420px;padding:28px;border:1px solid #71825a;background:#1c2a20ed;border-radius:16px;box-shadow:0 20px 50px #0008}.overlay h2{font-size:34px;margin:0 0 7px}.overlay p{color:#b8c4ad;margin:0 0 18px}
+@media(max-width:650px){main{padding:15px 10px 24px}header{margin-bottom:13px}.hint-top{display:none}#game{height:58vh;min-height:350px}.stat{padding:8px 10px}.statusbar{align-items:flex-start}.actions{width:100%}.actions button{flex:1}.help{gap:10px}}
+</style>
+</head>
+<body>
+<main>
+<header><div class="brand">FIELDWORK <span>/ HIDDEN OBJECTS</span></div><div class="hint-top">LOW-POLY EXPLORATION · FIND THE NEEDLE</div></header>
+<h1>Needle in the Hayfield<span style="color:var(--lime)">.</span></h1>
+<p class="intro">A tiny piece of metal. A whole lot of straw. Take a look around.</p>
+<section class="hud" aria-live="polite">
+ <div class="stat"><small>Time remaining</small><strong id="time">90.0s</strong></div>
+ <div class="stat"><small>Score</small><strong id="score">0</strong></div>
+ <div class="stat"><small>Field</small><strong id="level">01</strong></div>
+ <div class="stat"><small>Scans</small><strong id="hints">3</strong></div>
 </section>
-<section class="gamebox"><div class="canvas-wrap"><canvas id="field" width="1000" height="600" aria-label="Illustrated haystack game area"></canvas><div class="overlay show" id="overlay"><div><h2 id="message">Ready to search?</h2><p id="detail">Find the tiny needle hidden among the golden strands. Click where you think it is. You have 60 seconds.</p><button class="primary" id="start">Start searching</button></div></div></div>
-<div class="joystick-row" id="mobileControls"><div><div class="stick-base" id="stick" aria-label="Movement joystick"><div class="stick-knob" id="stickKnob"></div></div><div class="aim-note">Drag to move your search marker</div></div><button class="primary search-btn" id="searchBtn">Search here</button></div>
-<div class="controls"><span class="note" id="feedback">Look closely. The needle is small!</span><div class="buttons"><button id="hint">Use a hint (3)</button><button id="restart">Restart</button></div></div></section>
-<section class="how"><article><b>01 / Search</b><p>Click or tap the haystack where you spot the needle.</p></article><article><b>02 / Be sharp</b><p>Correct finds earn points. Wrong guesses cost a little time.</p></article><article><b>03 / Go deeper</b><p>Each level adds more straw and makes the needle harder to spot.</p></article></section>
+<section class="game-shell">
+ <div id="game" aria-label="Interactive 3D low-poly hayfield"></div><div class="crosshair"></div>
+ <div class="overlay" id="overlay"><div class="overlay-card"><h2 id="endTitle">Field cleared</h2><p id="endText">You found the needle.</p><button class="primary" id="again">Explore again</button></div></div>
+ <div class="statusbar"><span id="feedback">The field is yours. Find the needle.</span><div class="actions"><button id="scan">Pulse scan · 3</button><button id="reset">Restart field</button></div></div>
+</section>
+<div class="help"><span><b class="key">DRAG</b> orbit camera</span><span><b class="key">CLICK / TAP</b> search a spot</span><span><b class="key">SCROLL</b> zoom</span><span><b class="key">SCAN</b> get a clue</span></div>
 </main>
-<script>
-(()=>{
-const canvas=document.getElementById('field'),ctx=canvas.getContext('2d');
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+
+const host=document.querySelector('#game');
+const scene=new THREE.Scene();scene.background=new THREE.Color('#a8bd91');scene.fog=new THREE.Fog('#a8bd91',22,58);
+const camera=new THREE.PerspectiveCamera(48,1,.1,120);
+const renderer=new THREE.WebGLRenderer({antialias:true, powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;host.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight('#eff6d9','#6a5636',2.1));
+const sun=new THREE.DirectionalLight('#fff0c8',3.1);sun.position.set(-9,17,8);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-22;sun.shadow.camera.right=22;sun.shadow.camera.top=22;sun.shadow.camera.bottom=-22;scene.add(sun);
+const mat=(color,roughness=1)=>new THREE.MeshStandardMaterial({color,roughness,flatShading:true});
+const groundMat=mat('#718b55'), strawMats=['#d5a34e','#e2b75e','#c68b3d','#edc978','#b97d35','#dba94f'].map(c=>mat(c));
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),groundMat);ground.rotation.x=-Math.PI/2;ground.position.y=-.16;ground.receiveShadow=true;scene.add(ground);
+const hayGroup=new THREE.Group();scene.add(hayGroup);
+const needleGroup=new THREE.Group();scene.add(needleGroup);
+const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
+const searchPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);let targetPoint=new THREE.Vector3();
+let needlePos=new THREE.Vector3(),needleMesh=null,level=1,score=0,scans=3,timeLeft=90,playing=true,dragging=false,downX=0,downY=0,lastX=0,lastY=0,theta=.55,phi=1.02,radius=19,lastTick=performance.now(),pulseUntil=0;
 const $=id=>document.getElementById(id);
-let running=false,remaining=60,score=0,level=1,hints=3,needle={x:0,y:0,a:0},straw=[],last=0,raf=0,aim={x:500,y:300},stickVector={x:0,y:0},stickActive=false;
-const W=1000,H=600;
+function random(min,max){return min+Math.random()*(max-min)}
+function addHay(x,z,sx,sy,sz,material,rot=0){
+ const geo=new THREE.IcosahedronGeometry(1,1);const mesh=new THREE.Mesh(geo,material);mesh.position.set(x,sy*.62,z);mesh.scale.set(sx,sy,sz);mesh.rotation.y=rot;mesh.rotation.z=random(-.22,.22);mesh.castShadow=true;mesh.receiveShadow=true;hayGroup.add(mesh);return mesh;
+}
 function makeField(){
- straw=[];const count=260+level*95;
- for(let i=0;i<count;i++){let x=Math.random()*W,y=Math.random()*H;straw.push({x,y,len:16+Math.random()*65,a:(Math.random()-.5)*1.15,w:1+Math.random()*3,c:['#d69a43','#e8b85d','#bd792e','#f0c978','#9c6128','#dca951'][Math.floor(Math.random()*6)]});}
- needle={x:90+Math.random()*820,y:70+Math.random()*460,a:Math.random()*Math.PI};
- draw();
+ hayGroup.clear();needleGroup.clear();needleMesh=null;
+ // A broad, irregular low-poly mound made from overlapping straw bales.
+ for(let i=0;i<135+level*25;i++){
+  const angle=random(0,Math.PI*2),rad=Math.sqrt(Math.random())*9.2;
+  const x=Math.cos(angle)*rad,z=Math.sin(angle)*rad;
+  const mound=Math.max(0,1-rad/10);
+  const sx=random(.7,1.65),sy=random(.45,1.05)+mound*.45,sz=random(.7,1.6);
+  addHay(x,z,sx,sy,sz,strawMats[Math.floor(Math.random()*strawMats.length)],random(0,Math.PI));
+ }
+ // Little angular straw tufts around the edges.
+ for(let i=0;i<210;i++){
+  const x=random(-15,15),z=random(-13,13),h=random(.2,.8);
+  const tuft=new THREE.Mesh(new THREE.ConeGeometry(random(.08,.18),h,5),strawMats[Math.floor(Math.random()*strawMats.length)]);
+  tuft.position.set(x,h/2-.05,z);tuft.rotation.z=random(-.4,.4);tuft.rotation.x=random(-.3,.3);tuft.castShadow=true;hayGroup.add(tuft);
+ }
+ // Low-poly fence posts and rails frame the field.
+ const wood=mat('#725032');
+ for(let side of [-1,1])for(let i=0;i<9;i++){
+  const z=-12+i*3;const post=new THREE.Mesh(new THREE.BoxGeometry(.22,1.3,.22),wood);post.position.set(side*15,.5,z);post.castShadow=true;scene.add(post);
+ }
+ // The needle rests almost flush against the ground, tucked among the straw.
+ needlePos.set(random(-8,8),.12,random(-7,7));
+ const steel=mat('#d8e0d5',.35),red=mat('#a94b3d',.6);
+ needleMesh=new THREE.Group();
+ const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,1.05,6),steel);shaft.rotation.z=Math.PI/2;shaft.position.x=.05;needleMesh.add(shaft);
+ const eye=new THREE.Mesh(new THREE.TorusGeometry(.105,.025,5,8),steel);eye.position.x=-.49;needleMesh.add(eye);
+ const tip=new THREE.Mesh(new THREE.ConeGeometry(.045,.2,5),red);tip.rotation.z=-Math.PI/2;tip.position.x=.66;needleMesh.add(tip);
+ needleMesh.position.copy(needlePos);needleMesh.rotation.y=random(0,Math.PI);needleGroup.add(needleMesh);
+ // A few foreground rocks give the scene scale.
+ const rockMat=mat('#68765a');
+ for(let i=0;i<16;i++){const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(random(.2,.5),0),rockMat);rock.position.set(random(-14,14),-.02,random(-13,13));rock.scale.y=.55;rock.castShadow=true;scene.add(rock);}
 }
-function draw(reveal=false){
- ctx.clearRect(0,0,W,H);let g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#c98b3e');g.addColorStop(.5,'#e0aa51');g.addColorStop(1,'#a96c2d');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
- for(const s of straw){ctx.save();ctx.translate(s.x,s.y);ctx.rotate(s.a);ctx.strokeStyle=s.c;ctx.lineWidth=s.w;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-s.len/2,0);ctx.quadraticCurveTo(0,-4,s.len/2,0);ctx.stroke();ctx.restore();}
- // soft flecks add texture
- for(let i=0;i<180;i++){let x=(i*137.5)%W,y=(i*83.7)%H;ctx.fillStyle='rgba(90,48,13,.12)';ctx.fillRect(x,y,2,2);}
- if(!reveal&&$('mobileControls').getBoundingClientRect().width>0){ctx.save();ctx.beginPath();ctx.arc(aim.x,aim.y,19,0,Math.PI*2);ctx.strokeStyle='rgba(255,248,210,.95)';ctx.lineWidth=4;ctx.stroke();ctx.beginPath();ctx.moveTo(aim.x-27,aim.y);ctx.lineTo(aim.x+27,aim.y);ctx.moveTo(aim.x,aim.y-27);ctx.lineTo(aim.x,aim.y+27);ctx.strokeStyle='rgba(65,35,12,.85)';ctx.lineWidth=2;ctx.stroke();ctx.restore();}\n if(reveal){ctx.save();ctx.translate(needle.x,needle.y);ctx.rotate(needle.a);ctx.strokeStyle='#e8e4d5';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-25,0);ctx.lineTo(25,0);ctx.stroke();ctx.strokeStyle='#b72d25';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(20,-2);ctx.lineTo(29,0);ctx.stroke();ctx.restore();}
+function setCamera(){const x=radius*Math.sin(phi)*Math.sin(theta),y=radius*Math.cos(phi),z=radius*Math.sin(phi)*Math.cos(theta);camera.position.set(x,y,z);camera.lookAt(0,.1,0);}
+function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+function hud(){$('time').textContent=timeLeft.toFixed(1)+'s';$('score').textContent=score;$('level').textContent=String(level).padStart(2,'0');$('hints').textContent=scans;$('scan').textContent='Pulse scan · '+scans;$('scan').disabled=!playing||scans<=0;}
+function endGame(found){playing=false;$('overlay').classList.add('show');$('endTitle').textContent=found?'Needle located!':'Field search ended';$('endText').textContent=found?'Sharp eyes. Field score: '+score+'.':'The needle was tucked away in the straw. Final score: '+score+'.';needleGroup.visible=true;hud();}
+function newRound(){level++;timeLeft=Math.min(105,timeLeft+22);score+=Math.max(80,Math.round(timeLeft*5));makeField();needleGroup.visible=true;$('feedback').textContent='Found it! The next patch is denser.';hud();}
+function searchAt(clientX,clientY){
+ if(!playing)return;const r=renderer.domElement.getBoundingClientRect();pointer.x=((clientX-r.left)/r.width)*2-1;pointer.y=-((clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);raycaster.ray.intersectPlane(searchPlane,targetPoint);
+ const d=Math.hypot(targetPoint.x-needlePos.x,targetPoint.z-needlePos.z);
+ if(d<1.05){newRound();return;}
+ timeLeft=Math.max(0,timeLeft-1.4);
+ $('feedback').textContent=d<2.7?'Very close. Check the straw around there.':d<5?'Warm — you are in the right patch.':'No luck. Sweep the field and try again.';
+ hud();if(timeLeft<=0)endGame(false);
 }
-function update(){ $('time').textContent=remaining.toFixed(1)+'s';$('score').textContent=score;$('level').textContent=level;$('hints').textContent=hints;$('hint').textContent='Use a hint ('+hints+')';$('hint').disabled=!running||hints<=0;}
-function finish(won){running=false;cancelAnimationFrame(raf);$('overlay').classList.add('show');$('message').textContent=won?'Needle found!':'Time is up!';$('detail').textContent=won?'Excellent spotting. Your score: '+score+'. Ready for another round?':'The needle was hiding at the marked spot. Final score: '+score+'. Give it another go!';$('start').textContent='Play again';draw(true);update();}
-function tick(t){if(!running)return;if(!last)last=t;const dt=Math.min(.05,(t-last)/1000);remaining-=dt;if(stickActive){aim.x=Math.max(24,Math.min(W-24,aim.x+stickVector.x*520*dt));aim.y=Math.max(24,Math.min(H-24,aim.y+stickVector.y*520*dt));draw();}last=t;if(remaining<=0){remaining=0;update();finish(false);return;}update();raf=requestAnimationFrame(tick);}
-function start(){cancelAnimationFrame(raf);aim={x:W/2,y:H/2};stickVector={x:0,y:0};stickActive=false;$('stickKnob').style.transform='translate(0,0)';remaining=60;score=0;level=1;hints=3;running=true;last=0;$('overlay').classList.remove('show');$('feedback').textContent='The search is on…';makeField();update();raf=requestAnimationFrame(tick);}
-function next(){score+=Math.max(50,Math.round(250+remaining*4));level++;remaining=Math.min(90,remaining+12);$('feedback').textContent='Found it! Level '+level+' — the haystack grows.';makeField();update();}
-function searchAt(x,y){if(!running)return;const d=Math.hypot(x-needle.x,y-needle.y);if(d<25){next();return;}remaining=Math.max(0,remaining-1.5);$('feedback').textContent=d<90?'So close! Try just nearby.':d<190?'Getting warmer…':'Not quite. Keep looking.';update();if(remaining<=0)finish(false);}
-canvas.addEventListener('pointerdown',e=>{if(!running)return;const r=canvas.getBoundingClientRect();searchAt((e.clientX-r.left)/r.width*W,(e.clientY-r.top)/r.height*H);});
-const stick=$('stick'),knob=$('stickKnob');let stickPointer=null;
-function moveStick(e){if(stickPointer!==e.pointerId)return;const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=43,len=Math.hypot(dx,dy),scale=len>max?max/len:1,sx=dx*scale,sy=dy*scale;knob.style.transform=`translate(${sx}px,${sy}px)`;stickVector={x:sx/max,y:sy/max};}
-stick.addEventListener('pointerdown',e=>{if(!running)return;stickPointer=e.pointerId;stick.setPointerCapture(e.pointerId);stickActive=true;moveStick(e);});
-stick.addEventListener('pointermove',moveStick);
-function releaseStick(){stickPointer=null;stickActive=false;stickVector={x:0,y:0};knob.style.transform='translate(0,0)';}
-stick.addEventListener('pointerup',releaseStick);stick.addEventListener('pointercancel',releaseStick);
-$('searchBtn').addEventListener('click',()=>searchAt(aim.x,aim.y));
-$('hint').addEventListener('click',()=>{if(!running||hints<=0)return;hints--;let radius=115;ctx.save();ctx.beginPath();ctx.arc(needle.x,needle.y,radius,0,Math.PI*2);ctx.strokeStyle='rgba(255,246,190,.95)';ctx.lineWidth=5;ctx.setLineDash([12,9]);ctx.stroke();ctx.restore();$('feedback').textContent='A little area to search has been marked.';update();});
-$('start').addEventListener('click',start);$('restart').addEventListener('click',start);
-makeField();update();
-})();
-</script></body></html>
+renderer.domElement.addEventListener('pointerdown',e=>{dragging=true;downX=lastX=e.clientX;downY=lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId);});
+renderer.domElement.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;if(Math.hypot(e.clientX-downX,e.clientY-downY)>5){theta-=dx*.006;phi=THREE.MathUtils.clamp(phi+dy*.005,.48,1.38);setCamera();}});
+renderer.domElement.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;if(Math.hypot(e.clientX-downX,e.clientY-downY)<7)searchAt(e.clientX,e.clientY);});
+renderer.domElement.addEventListener('pointercancel',()=>dragging=false);
+renderer.domElement.addEventListener('wheel',e=>{radius=THREE.MathUtils.clamp(radius+e.deltaY*.012,12,29);setCamera();},{passive:true});
+$('scan').addEventListener('click',()=>{if(!playing||scans<=0)return;scans--;pulseUntil=performance.now()+2400;$('feedback').textContent='Pulse scan: listen to the clue — the needle is somewhere near the glowing patch.';hud();});
+$('reset').addEventListener('click',()=>{level=1;score=0;scans=3;timeLeft=90;playing=true;$('overlay').classList.remove('show');needleGroup.visible=true;makeField();$('feedback').textContent='A fresh field. Start searching.';hud();});
+$('again').addEventListener('click',()=>{$('reset').click();});
+makeField();setCamera();resize();new ResizeObserver(resize).observe(host);hud();
+function animate(now){requestAnimationFrame(animate);const dt=Math.min(.05,(now-lastTick)/1000);lastTick=now;
+ if(playing){timeLeft-=dt;if(timeLeft<=0){timeLeft=0;endGame(false);}hud();}
+ if(now<pulseUntil){const pulse=Math.sin(now*.012)*.5+.5;needleMesh?.scale.setScalar(1+pulse*.55);needleGroup.visible=true;}else if(needleMesh){needleMesh.scale.setScalar(1);needleGroup.visible=false;}
+ renderer.render(scene,camera);
+}requestAnimationFrame(animate);
+</script>
+</body></html>
